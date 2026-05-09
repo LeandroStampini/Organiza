@@ -30,7 +30,7 @@ class Category {
 
   Map<String, dynamic> toMap() => {
         'name': name,
-        'color': color.value,
+        'color': color.toARGB32(),
         'products': products.map((p) => p.toMap()).toList(),
       };
 
@@ -38,7 +38,8 @@ class Category {
         name: map['name'],
         color: Color(map['color']),
         products: List<Product>.from(
-          (map['products'] as List).map((p) => Product.fromMap(p)),
+          (map['products'] as List)
+              .map((p) => Product.fromMap(Map<String, dynamic>.from(p))),
         ),
       );
 }

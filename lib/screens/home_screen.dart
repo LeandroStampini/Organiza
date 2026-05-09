@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'models.dart';
 import 'category_products_screen.dart';
 import 'dashboard_screen.dart';
+import 'ai_chat_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userId;
@@ -113,6 +114,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => DashboardScreen(categories: _categories),
+                    ),
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.smart_toy_outlined),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Color(0xFFB8860B), width: 1.4),
+                  backgroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AIChatScreen(categories: _categories),
                     ),
                   );
                 },

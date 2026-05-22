@@ -4,7 +4,7 @@ import '../screens/models.dart';
 class AIService {
   // Obtenha sua chave GRATUITA em: https://ai.google.dev/
   // Clique em "Get API key" → "Create API key" (não precisa de cartão)
-  static const String apiKey = 'AIzaSyAk8yttC4weatQe6tPd49ZcIYsyGk2t7bc';
+  static const String apiKey = 'AIzaSyDdyL9rwq8bohkpLzLxQGyt6WBbzmGzMZA';
 
   static bool get isConfigured =>
       apiKey != 'COLOQUE_SUA_CHAVE_AQUI' && apiKey.trim().isNotEmpty;

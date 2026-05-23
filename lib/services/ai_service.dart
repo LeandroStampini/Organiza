@@ -1,10 +1,9 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../screens/models.dart';
+import '../config/secrets.dart';
 
 class AIService {
-  // Obtenha sua chave GRATUITA em: https://ai.google.dev/
-  // Clique em "Get API key" → "Create API key" (não precisa de cartão)
-  static const String apiKey = 'REDACTED';
+  static const String apiKey = geminiApiKey;
 
   static bool get isConfigured =>
       apiKey != 'COLOQUE_SUA_CHAVE_AQUI' && apiKey.trim().isNotEmpty;
@@ -15,7 +14,7 @@ class AIService {
 
   factory AIService(List<Category> categories) {
     final model = GenerativeModel(
-      model: 'gemini-3-flash-preview',
+      model: 'gemini-2.5-flash',
       apiKey: apiKey,
       systemInstruction: Content.system(_buildContext(categories)),
     );
@@ -93,8 +92,14 @@ class AIService {
         final err = e.toString().toLowerCase();
 
         if (err.contains('api_key_invalid') ||
-            err.contains('api key not valid')) {
-          return 'Chave API inválida. Verifique a chave em lib/services/ai_service.dart';
+            err.contains('api key not valid') ||
+            err.contains('invalid api key') ||
+            err.contains('api_key')) {
+          return '❌ Chave API inválida. Obtenha sua chave gratuita em https://ai.google.dev e insira em lib/services/ai_service.dart';
+        }
+
+        if (err.contains('not found') || err.contains('model')) {
+          return '❌ Modelo de IA não encontrado. Verifique o nome do modelo em ai_service.dart';
         }
 
         final isRateLimit =

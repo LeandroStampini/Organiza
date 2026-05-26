@@ -53,14 +53,12 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
   /// Exibe bottom sheet para escolher entre galeria e câmera
   Future<String?> _pickImage() async {
-    String? pickedPath;
-
-    await showModalBottomSheet(
+    return await showModalBottomSheet<String>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (_) => SafeArea(
+      builder: (sheetContext) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -83,24 +81,26 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
               leading: const Icon(Icons.photo_library, color: Colors.blue),
               title: const Text('Galeria'),
               onTap: () async {
-                Navigator.pop(context);
                 final XFile? image = await _picker.pickImage(
                   source: ImageSource.gallery,
                   imageQuality: 85,
                 );
-                pickedPath = image?.path;
+                if (sheetContext.mounted) {
+                  Navigator.pop(sheetContext, image?.path);
+                }
               },
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt, color: Colors.blue),
               title: const Text('Câmera'),
               onTap: () async {
-                Navigator.pop(context);
                 final XFile? image = await _picker.pickImage(
                   source: ImageSource.camera,
                   imageQuality: 85,
                 );
-                pickedPath = image?.path;
+                if (sheetContext.mounted) {
+                  Navigator.pop(sheetContext, image?.path);
+                }
               },
             ),
             const SizedBox(height: 8),
@@ -108,8 +108,6 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         ),
       ),
     );
-
-    return pickedPath;
   }
 
   @override

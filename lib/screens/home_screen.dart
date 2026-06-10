@@ -4,6 +4,7 @@ import 'models.dart';
 import 'category_products_screen.dart';
 import 'dashboard_screen.dart';
 import 'ai_chat_screen.dart';
+import '../services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userId;
@@ -49,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            AuthService.logout();
             Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
           },
         ),

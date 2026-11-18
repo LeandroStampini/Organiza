@@ -1,0 +1,30 @@
+rules_version = '2';
+
+// Organiza+ — uma empresa só: qualquer usuário logado acessa o estoque.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /categories/{id} {
+      allow read, write: if signedIn();
+    }
+
+    match /products/{id} {
+      allow read, write: if signedIn();
+    }
+
+    // Vendas: podem ser canceladas (status), mas nunca apagadas.
+    match /sales/{id} {
+      allow read, create, update: if signedIn();
+      allow delete: if false;
+    }
+
+    // Histórico de movimentações: só cria, nunca altera nem apaga.
+    match /movements/{id} {
+      allow read, create: if signedIn();
+      allow update, delete: if false;
+    }
+  }
+}
